@@ -1,0 +1,34 @@
+syntax ="proto3";
+option go_package = ".;pb";
+option csharp_namespace = "pb";
+// package pb;
+import "common/common.proto";
+
+message C2S_RegisterAccount{
+    string account=1;
+    string password=2;
+}
+message S2C_RegisterAccount{
+    uint32 error=1;
+}
+
+message C2S_LoginGame{
+    string account=1;    
+    string password=2;
+}
+message S2C_LoginGame{
+    uint32 error=1;        
+}
+
+message S2C_RoleList{
+    uint32 error=1;    
+    repeated Entity role_list=2;
+}
+
+message C2S_CreateRole{
+    string name=1;
+}
+message S2C_CreateRole{
+    uint32 error=1;    
+    Entity role=2;
+}

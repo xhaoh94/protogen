@@ -1,0 +1,12 @@
+syntax ="proto3";
+option go_package = ".;pb";
+
+message G2S_CreateSpace{
+    string spaceid =1;
+}
+message S2G_CreateSpace{
+    uint32 error=1;
+}
+service ICreateSpace {
+    rpc CreateSpace (G2S_CreateSpace) returns (S2G_CreateSpace) {}
+}

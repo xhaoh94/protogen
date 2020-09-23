@@ -11,7 +11,7 @@ export module pb{
 		"Bcst_EntityEnter":[["1","spaceid","1"],["2","entitys","Entity","1"]],
 		"Bcst_EntityLeave":[["1","spaceid","1"],["2","eids","1","1"]],
 		"Bcst_EntityMove":[["1","spaceid","1"],["2","eid","1"],["3","position","Vector3"]],
-		"Entity":[["1","id","1"],["2","owner","1"],["3","position","Vector3"],["4","spaceid","1"],["5","name","1"],["6","etype","6"]],
+		"Entity":[["1","id","1"],["2","owner","1"],["3","position","Vector3"],["4","spaceid","1"],["5","name","1"],["6","etype","6"],["7","t","TT"]],
 		"Vector3":[["1","x","3"],["2","y","3"],["3","z","3"]],
 		"C2S_EnterGame":[["1","roleid","1"]],
 		"S2C_EnterGame":[["1","error","8"],["2","self","Entity"],["3","entitys","Entity","1"]],
@@ -28,6 +28,10 @@ export module pb{
 		"G2L_CreateRole":[["1","name","1"],["2","account","1"]]
 	}
 
+	export const enum TT {
+		A=0,
+		B=1
+	}
 	export interface Bcst_EntityEnter {
 		spaceid:string;
 		entitys:Entity[];
@@ -48,6 +52,7 @@ export module pb{
 		spaceid:string;
 		name:string;
 		etype:number;
+		t:TT;
 	}
 	export interface Vector3 {
 		x:number;

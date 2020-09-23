@@ -7,12 +7,33 @@ import (
 	"strconv"
 )
 
-func WriteCode(msgs []*common.MessageStruct) {
+var (
+	UseModule bool
+)
 
-	str := "export module " + common.NameSpace + "{\n"
-	str += writeCmd(msgs) + "\n"
-	str += writeConf(msgs) + "\n"
-	for _, v := range msgs {
+//Write 写入
+func Write() {
+	fmt.Printf("write ts start")
+	str := "namespace " + common.NameSpace + "{\n"
+	if UseModule {
+		str = "export " + str
+	}
+	str += writeCmd() + "\n"
+	str += writeConf() + "\n"
+	for _, v := range common.Enums {
+		str += "\texport const enum " + v.Title + " {\n"
+		f := true
+		for _, c := range v.Datas {
+			if f {
+				f = false
+				str += "\t\t" + c[1] + "=" + c[0]
+			} else {
+				str += ",\n\t\t" + c[1] + "=" + c[0]
+			}
+		}
+		str += "\n\t}\n"
+	}
+	for _, v := range common.Messages {
 		str += "\texport interface " + v.Title + " {\n"
 		for _, c := range v.Datas { //tag type name isArray
 			isArray := c[len(c)-1] == "1"
@@ -27,36 +48,34 @@ func WriteCode(msgs []*common.MessageStruct) {
 	str += "}"
 
 	var d = []byte(str)
-	err := ioutil.WriteFile("out/Proto.ts", d, 0666)
+	err := ioutil.WriteFile(common.OutPath+"/ProtoCode.ts", d, 0666)
 	if err != nil {
-		fmt.Println("write fail")
+		fmt.Println("write ts fail")
+	} else {
+		fmt.Println("write ts success")
 	}
 }
 
-func writeCmd(msgs []*common.MessageStruct) string {
+func writeCmd() string {
 
-	// str := "export module " + common.NameSpace + "{\n"
 	str := "\texport const enum Cmds" + " {\n"
-	for _, v := range msgs {
+	for _, v := range common.Messages {
 		if v.Cmd > 0 {
 			str += "\t\t" + v.Title + " = " + strconv.Itoa(int(v.Cmd)) + ",\n"
 		}
 	}
-	// str += "\t}\n"
 	str += "\t}"
 
 	return str
 }
 
-func writeConf(msgs []*common.MessageStruct) string {
+func writeConf() string {
 
-	// str := "export module " + common.NameSpace + "{\n"
-	// str := "\texport class ProtoCfg {\n"
 	cmd := "\texport var cmds:{ [key: number]: string }={\n"
 	cfg := "\texport var cfgs:{ [key: string]: string[][] }={\n"
 	f := true
-	for j := 0; j < len(msgs); j++ {
-		v := msgs[j]
+	for j := 0; j < len(common.Messages); j++ {
+		v := common.Messages[j]
 		if v.Cmd > 0 {
 			if f {
 				f = false
@@ -79,7 +98,7 @@ func writeConf(msgs []*common.MessageStruct) string {
 				cfg += "],"
 			}
 		}
-		if j == len(msgs)-1 {
+		if j == len(common.Messages)-1 {
 			cfg += "]\n"
 		} else {
 			cfg += "],\n"
@@ -87,15 +106,6 @@ func writeConf(msgs []*common.MessageStruct) string {
 	}
 	cfg += "\t}\n"
 	cmd += "\n\t}\n"
-	// str += cmd
-	// str += cfg
-	// str += "\t}\n"
-
-	// str += "}"
 	return cmd + cfg
-	// var d = []byte(str)
-	// err := ioutil.WriteFile("out/Protocfg.ts", d, 0666)
-	// if err != nil {
-	// 	fmt.Println("write fail")
-	// }
+
 }

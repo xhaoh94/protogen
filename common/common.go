@@ -11,10 +11,18 @@ type (
 		Title string
 		Datas [][]string
 	}
+	EnumStruct struct {
+		Title string
+		Datas [][]string
+	}
 )
 
 var (
 	NameSpace string
+	OutPath   string
+
+	Messages []*MessageStruct
+	Enums    []*EnumStruct
 )
 
 // var types: { [key: string]: string } = {
@@ -109,6 +117,7 @@ func cov(str string) string {
 	}
 }
 func FilePathContent(path string, out *[]string) {
+	path += "/"
 	fs, _ := ioutil.ReadDir(path)
 	for _, file := range fs {
 		if file.IsDir() {

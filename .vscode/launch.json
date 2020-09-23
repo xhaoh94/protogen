@@ -11,7 +11,11 @@
             "mode": "auto",
             "program": "${workspaceFolder}",
             "env": {},
-            "args": []
+            "args": [
+                "-code_type=ts",
+                "-in_path=D:/golang/file",
+                "-out_path=D:/golang/out"
+            ]
         }
     ]
 }

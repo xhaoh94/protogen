@@ -10,9 +10,11 @@ import (
 func WriteCode(msgs []*common.MessageStruct) {
 
 	str := "export module " + common.NameSpace + "{\n"
+	str += writeCmd(msgs) + "\n"
+	str += writeConf(msgs) + "\n"
 	for _, v := range msgs {
 		str += "\texport interface " + v.Title + " {\n"
-		for _, c := range v.Cacels { //tag type name isArray
+		for _, c := range v.Datas { //tag type name isArray
 			isArray := c[len(c)-1] == "1"
 			if isArray {
 				str += "\t\t" + c[2] + ":" + common.GetType(c[1]) + "[];\n"
@@ -31,55 +33,50 @@ func WriteCode(msgs []*common.MessageStruct) {
 	}
 }
 
-func WriteCmd(msgs []*common.MessageStruct) {
+func writeCmd(msgs []*common.MessageStruct) string {
 
 	// str := "export module " + common.NameSpace + "{\n"
-	str := "export enum ProtoCmd" + " {\n"
+	str := "\texport const enum Cmds" + " {\n"
 	for _, v := range msgs {
 		if v.Cmd > 0 {
-			str += "\t" + v.Title + " = " + strconv.Itoa(int(v.Cmd)) + ",\n"
+			str += "\t\t" + v.Title + " = " + strconv.Itoa(int(v.Cmd)) + ",\n"
 		}
 	}
 	// str += "\t}\n"
-	str += "}"
+	str += "\t}"
 
-	var d = []byte(str)
-	err := ioutil.WriteFile("out/ProtoCmd.ts", d, 0666)
-	if err != nil {
-		fmt.Println("write fail")
-	}
+	return str
 }
 
-func WriteConf(msgs []*common.MessageStruct) {
+func writeConf(msgs []*common.MessageStruct) string {
 
-	str := "export module " + common.NameSpace + "{\n"
-	str += "\texport class ProtoCfg {\n"
-	cmd := "\t\t public static cmds:{ [key: number]: string }={\n"
-	cfg := "\t\t public static cfgs:{ [key: string]: string[][] }={\n"
+	// str := "export module " + common.NameSpace + "{\n"
+	// str := "\texport class ProtoCfg {\n"
+	cmd := "\texport var cmds:{ [key: number]: string }={\n"
+	cfg := "\texport var cfgs:{ [key: string]: string[][] }={\n"
 	f := true
 	for j := 0; j < len(msgs); j++ {
 		v := msgs[j]
 		if v.Cmd > 0 {
 			if f {
 				f = false
-				cmd += "\t\t\t" + strconv.Itoa(int(v.Cmd)) + ":" + common.GetString(v.Title)
+				cmd += "\t\t" + strconv.Itoa(int(v.Cmd)) + ":" + common.GetString(v.Title)
 			} else {
-				cmd += ",\n\t\t\t" + strconv.Itoa(int(v.Cmd)) + ":" + common.GetString(v.Title)
+				cmd += ",\n\t\t" + strconv.Itoa(int(v.Cmd)) + ":" + common.GetString(v.Title)
 			}
 		}
-		cfg += "\t\t\t" + common.GetString(v.Title) + ":[\n"
-		for i := 0; i < len(v.Cacels); i++ {
-			c := v.Cacels[i]
-			cfg += "\t\t\t\t" + "["
-			cfg += common.GetString(c[0]) + "," + common.GetString(c[1]) + "," + common.GetString(c[2])
+		cfg += "\t\t" + common.GetString(v.Title) + ":["
+		for i := 0; i < len(v.Datas); i++ {
+			c := v.Datas[i]
+			cfg += "[" + common.GetString(c[0]) + "," + common.GetString(c[2]) + "," + common.GetId(c[1])
 			isArray := c[len(c)-1] == "1"
 			if isArray {
 				cfg += "," + common.GetString("1")
 			}
-			if i == len(v.Cacels)-1 {
-				cfg += "]\n\t\t\t"
+			if i == len(v.Datas)-1 {
+				cfg += "]"
 			} else {
-				cfg += "],\n"
+				cfg += "],"
 			}
 		}
 		if j == len(msgs)-1 {
@@ -88,16 +85,17 @@ func WriteConf(msgs []*common.MessageStruct) {
 			cfg += "],\n"
 		}
 	}
-	cfg += "\t\t}\n"
-	cmd += "\n\t\t}\n"
-	str += cmd
-	str += cfg
-	str += "\t}\n"
-	str += "}"
+	cfg += "\t}\n"
+	cmd += "\n\t}\n"
+	// str += cmd
+	// str += cfg
+	// str += "\t}\n"
 
-	var d = []byte(str)
-	err := ioutil.WriteFile("out/Protocfg.ts", d, 0666)
-	if err != nil {
-		fmt.Println("write fail")
-	}
+	// str += "}"
+	return cmd + cfg
+	// var d = []byte(str)
+	// err := ioutil.WriteFile("out/Protocfg.ts", d, 0666)
+	// if err != nil {
+	// 	fmt.Println("write fail")
+	// }
 }

@@ -36,7 +36,7 @@ func main() {
 	}
 	common.NameSpace = "pb"
 	ts.WriteCode(msgs)
-	ts.WriteCmd(msgs)
+	// ts.WriteCmd(msgs)
 	// ts.WriteConf(msgs)
 	writeConfJson()
 }
@@ -45,7 +45,7 @@ func parse(str string) {
 	strs := messageReg.FindAllString(str, -1)
 	for _, context := range strs {
 		s := &common.MessageStruct{}
-		s.Cacels = make([][]string, 0)
+		s.Datas = make([][]string, 0)
 		cmdMatched := cmdReg.FindStringSubmatch(context)
 		if len(cmdMatched) == 2 {
 			num, err := strconv.Atoi(cmdMatched[1])
@@ -75,23 +75,24 @@ func parse(str string) {
 					continue
 				}
 
-				cacel := make([]string, 0)
+				datas := make([]string, 0)
 				c[1] = strings.Replace(c[1], " ", "", -1)
 				endIndex := strings.Index(c[1], ";")
 				tag := c[1][0:endIndex]
-				cacel = append(cacel, tag)
+				datas = append(datas, tag)
+
 				ts := strings.Split(c[0], " ")
 				for _, v := range ts {
 					if v != "" && v != "repeated" {
-						cacel = append(cacel, v)
+						datas = append(datas, v)
 					}
 				}
 				if strings.Index(c[0], "repeated") >= 0 {
-					cacel = append(cacel, "1")
+					datas = append(datas, "1")
 				} else {
-					cacel = append(cacel, "0")
+					datas = append(datas, "0")
 				}
-				s.Cacels = append(s.Cacels, cacel)
+				s.Datas = append(s.Datas, datas)
 			}
 		}
 		msgs = append(msgs, s)
@@ -115,15 +116,15 @@ func writeConfJson() {
 			}
 		}
 		cfg += "\t\t" + common.GetString(v.Title) + ":[\n"
-		for i := 0; i < len(v.Cacels); i++ {
-			c := v.Cacels[i]
+		for i := 0; i < len(v.Datas); i++ {
+			c := v.Datas[i]
 			cfg += "\t\t\t" + "["
-			cfg += common.GetString(c[0]) + "," + common.GetString(c[1]) + "," + common.GetString(c[2])
+			cfg += common.GetString(c[0]) + "," + common.GetString(c[2]) + "," + common.GetId(c[1])
 			isArray := c[len(c)-1] == "1"
 			if isArray {
 				cfg += "," + common.GetString("1")
 			}
-			if i == len(v.Cacels)-1 {
+			if i == len(v.Datas)-1 {
 				cfg += "]"
 			} else {
 				cfg += "],\n"

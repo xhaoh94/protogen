@@ -1,13 +1,13 @@
 package main
 
 import (
-	"dpb/common"
-	"dpb/ts"
 	"flag"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"os/signal"
+	"protogen/common"
+	"protogen/ts"
 	"regexp"
 	"strconv"
 	"strings"

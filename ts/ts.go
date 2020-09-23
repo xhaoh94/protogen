@@ -1,9 +1,9 @@
 package ts
 
 import (
-	"dpb/common"
 	"fmt"
 	"io/ioutil"
+	"protogen/common"
 	"strconv"
 )
 

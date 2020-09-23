@@ -1,3 +1,3 @@
-module dpb
+module protogen
 
-go 1.14
+go 1.15

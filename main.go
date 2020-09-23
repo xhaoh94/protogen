@@ -51,7 +51,7 @@ func parse() {
 	useModule := flag.Bool("use_module", true, "(typescript)是否使用模块模式")
 	flag.Parse()
 	if *codeType == "" {
-		fmt.Printf("生成失败！没有指定生成代码类型")
+		fmt.Println("生成失败！没有指定生成代码类型")
 		return
 	}
 	common.OutPath = *outPath
@@ -73,7 +73,7 @@ func parse() {
 	case "csharp":
 		break
 	default:
-		fmt.Printf("代码类型未实现")
+		fmt.Println("代码类型未实现")
 		return
 	}
 	if *createJSON {

@@ -1,10 +1,10 @@
 {
-	"rpcs":{
-		"C2S_EnterGame":"S2C_EnterGame"
-	},
 	"cmds":{
 		"10001":"C2S_EnterGame",
 		"20001":"S2C_EnterGame"
+	},
+	"rpcs":{
+		"C2S_EnterGame":"S2C_EnterGame"
 	},
 	"cfgs":{
 		"Bcst_EntityEnter":[["1","spaceid","1"],["2","entitys","Entity","1"]],

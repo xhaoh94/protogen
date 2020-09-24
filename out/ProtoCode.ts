@@ -9,6 +9,9 @@ export namespace pb{
 		10001:"C2S_EnterGame",
 		20001:"S2C_EnterGame"
 	}
+	export var rpcs:{ [key: string]: string }={
+		"C2S_EnterGame":"S2C_EnterGame"
+	}
 	export var cfgs:{ [key: string]: string[][] }={
 		"Bcst_EntityEnter":[["1","spaceid","1"],["2","entitys","Entity","1"]],
 		"Bcst_EntityLeave":[["1","spaceid","1"],["2","eids","1","1"]],
@@ -28,9 +31,6 @@ export namespace pb{
 		"S2G_CreateSpace":[["1","error","8"]],
 		"G2L_RoleList":[["1","account","1"]],
 		"G2L_CreateRole":[["1","name","1"],["2","account","1"]]
-	}
-	export var rpcs:{ [key: string]: string }={
-		"C2S_EnterGame":"S2C_EnterGame"
 	}
 
 	export interface Bcst_EntityEnter {

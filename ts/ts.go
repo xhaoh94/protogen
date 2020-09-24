@@ -121,10 +121,11 @@ func writeConf() string {
 	cfg += "\t}\n"
 	cmd += "\n\t}\n"
 
-	r := cmd + cfg
+	r := cmd
 	if len(common.Rpcs) > 0 {
 		r += rpc
 	}
+	r += cfg
 	return r
 
 }

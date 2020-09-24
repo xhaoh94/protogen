@@ -4,8 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
-	"os"
-	"os/signal"
 	"protogen/common"
 	"protogen/ts"
 	"regexp"
@@ -40,9 +38,6 @@ func init() {
 
 func main() {
 	parse()
-	sigChan := make(chan os.Signal, 1)
-	signal.Notify(sigChan, os.Interrupt, os.Kill)
-	<-sigChan
 }
 func parse() {
 	codeType := flag.String("code_type", "", "生产代码类型")

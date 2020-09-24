@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"protogen/common"
+	"protogen/golang"
 	"protogen/ts"
 	"regexp"
 	"strconv"
@@ -70,6 +71,9 @@ func parse() {
 		ts.Write()
 		break
 	case "csharp":
+		break
+	case "golang":
+		golang.Write()
 		break
 	default:
 		fmt.Println("代码类型未实现")

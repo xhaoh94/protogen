@@ -3,6 +3,7 @@ package ts
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 	"protogen/common"
 	"strconv"
 )
@@ -14,6 +15,11 @@ var (
 //Write 写入
 func Write() {
 	fmt.Println("write ts start")
+	_, err := os.Stat(common.OutPath)
+	if err != nil {
+		os.Mkdir(common.OutPath, 0777)
+	}
+
 	str := "namespace " + common.NameSpace + "{\n"
 	if UseModule {
 		str = common.Title + "export " + str
@@ -21,7 +27,9 @@ func Write() {
 		str = common.Title + str
 	}
 	str += writeCmd() + "\n"
-	str += writeConf() + "\n"
+	if !common.CreateJson {
+		str += writeConf() + "\n"
+	}
 	for _, v := range common.Enums {
 		str += "\texport const enum " + v.Title + " {\n"
 		f := true
@@ -50,7 +58,7 @@ func Write() {
 	str += "}"
 
 	var d = []byte(str)
-	err := ioutil.WriteFile(common.OutPath+"/ProtoCode.ts", d, 0666)
+	err = ioutil.WriteFile(common.OutPath+"/ProtoCode.ts", d, 0666)
 	if err != nil {
 		fmt.Println("write ts fail")
 	} else {

@@ -50,12 +50,13 @@ func parse() {
 	outPath := flag.String("out_path", "out/", "导出文件目录")
 	ns := flag.String("namespace", "pb", "生成代码命名空间")
 	createJSON := flag.Bool("create_json", true, "是否生成json配置")
-	useModule := flag.Bool("use_module", true, "(typescript)是否使用模块模式")
+	useModule := flag.Bool("use_module", false, "(typescript)是否使用模块模式")
 	flag.Parse()
 	if *codeType == "" {
 		fmt.Println("生成失败！没有指定生成代码类型")
 		return
 	}
+	common.CreateJson = *createJSON
 	common.OutPath = *outPath
 	common.NameSpace = *ns
 	ts.UseModule = *useModule

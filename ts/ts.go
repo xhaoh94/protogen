@@ -73,9 +73,21 @@ func writeCmd() string {
 
 func writeConf() string {
 
+	rpc := "\texport var rpcs:{ [key: string]: string }={\n"
+	f := true
+	for k := 0; k < len(common.Rpcs); k++ {
+		v := common.Rpcs[k]
+		if f {
+			f = false
+			rpc += "\t\t" + common.GetString(v.Req) + ":" + common.GetString(v.Rsp)
+		} else {
+			rpc += ",\n\t\t" + common.GetString(v.Req) + ":" + common.GetString(v.Rsp)
+		}
+	}
+	rpc += "\n\t}\n"
 	cmd := "\texport var cmds:{ [key: number]: string }={\n"
 	cfg := "\texport var cfgs:{ [key: string]: string[][] }={\n"
-	f := true
+	f = true
 	for j := 0; j < len(common.Messages); j++ {
 		v := common.Messages[j]
 		if v.Cmd > 0 {
@@ -108,6 +120,11 @@ func writeConf() string {
 	}
 	cfg += "\t}\n"
 	cmd += "\n\t}\n"
-	return cmd + cfg
+
+	r := cmd + cfg
+	if len(common.Rpcs) > 0 {
+		r += rpc
+	}
+	return r
 
 }

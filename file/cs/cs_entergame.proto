@@ -3,10 +3,11 @@ option go_package = ".;pb";
 option csharp_namespace = "pb";
 import "common/common.proto";
 
-message C2S_EnterGame{//cmd:10001
+//rpc<C2S_EnterGame:S2C_EnterGame>
+message C2S_EnterGame{//cmd=10001
     string roleid =1;
 }
-message S2C_EnterGame{//cmd:20001
+message S2C_EnterGame{//cmd=20001
     uint32 error=1;    
     Entity self =2;
     repeated Entity entitys=3;

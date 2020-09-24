@@ -15,6 +15,10 @@ type (
 		Title string
 		Datas [][]string
 	}
+	RpcStruct struct {
+		Req string
+		Rsp string
+	}
 )
 
 var (
@@ -24,6 +28,7 @@ var (
 
 	Messages []*MessageStruct
 	Enums    []*EnumStruct
+	Rpcs     []*RpcStruct
 )
 
 // var types: { [key: string]: string } = {

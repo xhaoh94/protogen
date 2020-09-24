@@ -19,6 +19,7 @@ var (
 	enumReg         *regexp.Regexp
 	enumTitleReg    *regexp.Regexp
 	cmdReg          *regexp.Regexp
+	rpcReg          *regexp.Regexp
 	contextReg      *regexp.Regexp
 
 	fileName string
@@ -31,7 +32,8 @@ func init() {
 	enumReg = regexp.MustCompile(`enum ([^}]+)}`)
 	enumTitleReg = regexp.MustCompile(`enum ([^{]+)`)
 
-	cmdReg = regexp.MustCompile(`cmd:([\d]+)`)
+	cmdReg = regexp.MustCompile(`cmd=([\d]+)`)
+	rpcReg = regexp.MustCompile(`rpc<([^>]+)>`)
 	contextReg = regexp.MustCompile(`{([^}]+)}`)
 
 }
@@ -65,6 +67,7 @@ func parse() {
 			return
 		}
 		parseEnum(v)
+		parseRPC(v)
 	}
 	switch *codeType {
 	case "ts":
@@ -78,6 +81,26 @@ func parse() {
 	}
 	if *createJSON {
 		writeJSON()
+	}
+}
+
+func parseRPC(str string) {
+	strs := rpcReg.FindAllString(str, -1)
+	for _, context := range strs {
+		if strings.Index(context, ":") < 0 {
+			continue
+		}
+		s := &common.RpcStruct{}
+		rpcMatched := rpcReg.FindStringSubmatch(context)
+		if len(rpcMatched) == 2 {
+			str := strings.Replace(rpcMatched[1], " ", "", -1)
+			str = strings.Replace(str, "<", "", -1)
+			str = strings.Replace(str, ">", "", -1)
+			ss := strings.Split(str, ":")
+			s.Req = ss[0]
+			s.Rsp = ss[1]
+		}
+		common.Rpcs = append(common.Rpcs, s)
 	}
 }
 func parseEnum(str string) {

@@ -1,4 +1,7 @@
 {
+	"rpcs":{
+		"C2S_EnterGame":"S2C_EnterGame"
+	},
 	"cmds":{
 		"10001":"C2S_EnterGame",
 		"20001":"S2C_EnterGame"

@@ -209,9 +209,23 @@ func writeJSON() {
 	fmt.Println("write json start")
 	fileName = common.OutPath + "/ProtoCfg.json"
 	str := "{\n"
+
+	rpc := "\t" + common.GetString("rpcs") + ":{\n"
+	f := true
+	for k := 0; k < len(common.Rpcs); k++ {
+		v := common.Rpcs[k]
+		if f {
+			f = false
+			rpc += "\t\t" + common.GetString(v.Req) + ":" + common.GetString(v.Rsp)
+		} else {
+			rpc += ",\n\t\t" + common.GetString(v.Req) + ":" + common.GetString(v.Rsp)
+		}
+	}
+	rpc += "\n\t},\n"
+
 	cmd := "\t" + common.GetString("cmds") + ":{\n"
 	cfg := "\t" + common.GetString("cfgs") + ":{\n"
-	f := true
+	f = true
 	for j := 0; j < len(common.Messages); j++ {
 		v := common.Messages[j]
 		if v.Cmd > 0 {
@@ -245,6 +259,7 @@ func writeJSON() {
 	cfg += "\t}\n"
 	cmd += "\n\t},\n"
 	str += cmd
+	str += rpc
 	str += cfg
 	str += "}"
 

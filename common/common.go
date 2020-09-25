@@ -3,6 +3,7 @@ package common
 import (
 	"fmt"
 	"io/ioutil"
+	"strings"
 )
 
 type (
@@ -124,12 +125,23 @@ func cov(str string) string {
 	}
 }
 func FilePathContent(path string, out *[]string) {
-	path += "/"
+	if string(path[len(path)-1]) != "\\" {
+		path += "\\"
+	}
 	fs, _ := ioutil.ReadDir(path)
 	for _, file := range fs {
 		if file.IsDir() {
-			FilePathContent(path+file.Name()+"/", out)
+			FilePathContent(path+file.Name()+"\\", out)
 		} else {
+			if strings.Index(file.Name(), ".") < 0 {
+				FilePathContent(path+file.Name()+"\\", out)
+				continue
+			}
+			if strings.Index(file.Name(), "proto") < 0 {
+
+				continue
+			}
+			fmt.Println(file.Name())
 			f, err := ioutil.ReadFile(path + file.Name())
 			if err != nil {
 				fmt.Println("read fail", err)

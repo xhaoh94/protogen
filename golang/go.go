@@ -25,8 +25,8 @@ func Write() {
 	var d = []byte(str)
 	err = ioutil.WriteFile(common.OutPath+"/cmd.pb.go", d, 0666)
 	if err != nil {
-		fmt.Println("write ts fail")
+		fmt.Println("write golang fail")
 	} else {
-		fmt.Println("write ts success")
+		fmt.Println("write golang success")
 	}
 }

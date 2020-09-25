@@ -42,7 +42,7 @@ func main() {
 }
 func parse() {
 	codeType := flag.String("code_type", "", "生产代码类型")
-	inPath := flag.String("in_path", "file/", "proto文件目录")
+	inPath := flag.String("in_path", "file", "proto文件目录")
 	outPath := flag.String("out_path", "out/", "导出文件目录")
 	ns := flag.String("namespace", "pb", "生成代码命名空间")
 	createJSON := flag.Bool("create_json", true, "是否生成json配置")
@@ -206,7 +206,6 @@ func parseMessage(str string) bool {
 }
 
 func writeJSON() {
-	fmt.Println("write json start")
 	fileName = common.OutPath + "/ProtoCfg.json"
 	str := "{\n"
 

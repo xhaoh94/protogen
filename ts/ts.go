@@ -14,7 +14,6 @@ var (
 
 //Write 写入
 func Write() {
-	fmt.Println("write ts start")
 	_, err := os.Stat(common.OutPath)
 	if err != nil {
 		os.Mkdir(common.OutPath, 0777)

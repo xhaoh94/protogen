@@ -11,6 +11,7 @@ message Entity{
         string spaceid=4;
         string name=5;
         int32 etype=6;
+        TT t=7;
 }
 
 message Vector3{
@@ -19,4 +20,7 @@ message Vector3{
     float z=3;
 }
 
-
+enum TT{
+    A=1;
+    B=2;
+}

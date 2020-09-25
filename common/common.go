@@ -31,6 +31,7 @@ var (
 	Messages []*MessageStruct
 	Enums    []*EnumStruct
 	Rpcs     []*RpcStruct
+	IsEnum   map[string]bool = make(map[string]bool)
 )
 
 // var types: { [key: string]: string } = {
@@ -87,6 +88,9 @@ func GetId(str string) string {
 	return GetString(cov(str))
 }
 func cov(str string) string {
+	if IsEnum[str] {
+		return "5"
+	}
 	switch str {
 	case "bool":
 		return "0"
@@ -98,8 +102,6 @@ func cov(str string) string {
 		return "3"
 	case "double":
 		return "4"
-	case "enum":
-		return "5"
 	case "int32":
 		return "6"
 	case "int64":

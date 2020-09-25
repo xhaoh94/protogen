@@ -14,7 +14,8 @@ func Write() {
 		os.Mkdir(common.OutPath, 0777)
 	}
 
-	str := "package " + common.NameSpace + "\n\nconst (\n"
+	str := common.Title + "package " + common.NameSpace + "\n\nconst (\n"
+
 	for _, v := range common.Messages {
 		if v.Cmd > 0 {
 			str += "\t" + v.Title + " uint32 = " + strconv.Itoa(int(v.Cmd)) + "\n"

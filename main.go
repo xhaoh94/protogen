@@ -140,7 +140,7 @@ func parseEnum(str string) {
 				s.Datas = append(s.Datas, datas)
 			}
 		}
-
+		common.IsEnum[s.Title] = true
 		common.Enums = append(common.Enums, s)
 	}
 }

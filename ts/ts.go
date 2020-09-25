@@ -80,7 +80,7 @@ func writeCmd() string {
 
 func writeConf() string {
 
-	rpc := "\texport var rpcs:{ [key: string]: string }={\n"
+	rpc := "\texport const rpcs:{ [key: string]: string }={\n"
 	f := true
 	for k := 0; k < len(common.Rpcs); k++ {
 		v := common.Rpcs[k]
@@ -92,8 +92,8 @@ func writeConf() string {
 		}
 	}
 	rpc += "\n\t}\n"
-	cmd := "\texport var cmds:{ [key: number]: string }={\n"
-	cfg := "\texport var cfgs:{ [key: string]: string[][] }={\n"
+	cmd := "\texport const cmds:{ [key: number]: string }={\n"
+	cfg := "\texport const cfgs:{ [key: string]: string[][] }={\n"
 	f = true
 	for j := 0; j < len(common.Messages); j++ {
 		v := common.Messages[j]
